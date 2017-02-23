@@ -18,6 +18,8 @@ vector< vector<int> > requests;
 
 vector<int> videoRequests;
 
+vector< vector<int> > cacheServers;
+
 void getInput()
 {
     cin >> noVideos;
@@ -102,9 +104,23 @@ void testGetInput()
 
 void john()
 {
-    // all endpoints
-    for(int i = 0; i < endpoints.size(); ++i) {
+    for(int i = 0; i < videoRequests.size(); ++i) {
+        if(videoRequests[i] > 0) {
 
+
+            int mostRequested = -1;
+            int endpointMost = -1;
+
+            for(int j = 0; j < requests.size(); ++j) {
+                if(requests[j][0] == i) {// request for this video
+                    if(requests[j][2] > mostRequested ) {
+                        mostRequested = requests[j][2];
+                        endpointMost = requests[j][1];
+                    }
+                    }
+                }
+            cout << "Endpoint: " << endpointMost << " requests " << mostRequested << " for video[" << i << "]" << endl;
+        }
     }
 }
 
@@ -116,6 +132,14 @@ int sumVideoSize()  // in MB
     return sum;
 }
 
+int sumRequestedVideoSize()
+{
+    int sum = 0;
+    for(int i = 0; i < videoSizes.size(); ++i)
+        if(videoRequests[i] > 0)
+            sum += videoSizes[i];
+    return sum;
+}
 void fillVideoRequests()
 {
     for(int i = 0; i < noVideos; ++i) {
@@ -126,6 +150,21 @@ void fillVideoRequests()
         videoRequests[ requests[i][0] ] += requests[i][2];
     }
 }
+
+int addToCache(int cacheNumber, int videoNum)
+{
+    int totCacheSize = 0;
+    cacheServers[cacheNumber].push_back(videoNum);
+
+    for(int i = 0; i < cacheServers[cacheNumber].size(); ++i) {
+        totCacheSize += cacheServers[cacheNumber][i];
+    }
+
+    if(totCacheSize > cacheSize)
+        return 0;
+    else
+        return 1
+}
 int main()
 {
     getInput();
@@ -134,6 +173,11 @@ int main()
     fillVideoRequests();
 
     for(int i = 0; i < videoRequests.size(); ++i) {
-        cout << "Video[" << i << "] requests: " << videoRequests[i] << endl;
+        
+        if(videoRequests[i] > 0)
+             cout << "Video[" << i << "] requests: " << videoRequests[i] << " size per video " << videoSizes[i] << " total requests data " << videoSizes[i]*videoRequests[i] << endl;
     }
+
+    cout << sumRequestedVideoSize() << endl;
+    john();
 }
