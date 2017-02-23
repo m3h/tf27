@@ -12,7 +12,7 @@ int cacheSize;
 
 vector<int> videoSizes;
 vector< vector<int> > endpoints;
-//vector<int>
+vector< vector<int> > requests;
 
 
 void getInput()
@@ -28,7 +28,7 @@ void getInput()
         cin >> temp;
         videoSizes.push_back(temp);
     }
-
+    // get in endpoints
     for(int i = 0; i < noEndpoints; ++i) {
         vector<int> curEndpoint;
         int temp;
@@ -47,6 +47,21 @@ void getInput()
             curEndpoint.push_back(temp);
         }
         endpoints.push_back(curEndpoint);
+   }
+
+   // get in requests
+   for(int i = 0; i < noRequestDescriptions; ++i) {
+       vector<int> tempReqs;
+
+       int temp;
+       cin >> temp;
+       tempReqs.push_back(temp);
+       cin >> temp;
+       tempReqs.push_back(temp);
+       cin >> temp;
+       tempReqs.push_back(temp);
+
+       requests.push_back(tempReqs);
    }
 
 }
@@ -73,4 +88,12 @@ int main()
         cout << tempEnd[i+1] << endl;
     }
     
+    cout << "REQUESTS" << endl;
+    for(int i = 0; i < requests.size(); ++i) {
+        cout << requests[i][0] << " ";
+        cout << requests[i][1] << " ";
+        cout << requests[i][2] << " ";
+
+        cout << endl;
+    }
 }

@@ -1,0 +1,27 @@
+In file included from /usr/include/c++/4.8/vector:69:0,
+                 from main.cpp:2:
+/usr/include/c++/4.8/bits/vector.tcc: In instantiation of ‘void std::vector<_Tp, _Alloc>::_M_insert_aux(std::vector<_Tp, _Alloc>::iterator, const _Tp&) [with _Tp = int [3]; _Alloc = std::allocator<int [3]>; std::vector<_Tp, _Alloc>::iterator = __gnu_cxx::__normal_iterator<int (*)[3], std::vector<int [3]> >; typename std::_Vector_base<_Tp, _Alloc>::pointer = int (*)[3]]’:
+/usr/include/c++/4.8/bits/stl_vector.h:913:28:   required from ‘void std::vector<_Tp, _Alloc>::push_back(const value_type&) [with _Tp = int [3]; _Alloc = std::allocator<int [3]>; std::vector<_Tp, _Alloc>::value_type = int [3]]’
+main.cpp:60:35:   required from here
+/usr/include/c++/4.8/bits/vector.tcc:329:19: error: array must be initialized with a brace-enclosed initializer
+    _Tp __x_copy = __x;
+                   ^
+/usr/include/c++/4.8/bits/vector.tcc:335:16: error: invalid array assignment
+    *__position = __x_copy;
+                ^
+In file included from /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++allocator.h:33:0,
+                 from /usr/include/c++/4.8/bits/allocator.h:46,
+                 from /usr/include/c++/4.8/string:41,
+                 from /usr/include/c++/4.8/bits/locale_classes.h:40,
+                 from /usr/include/c++/4.8/bits/ios_base.h:41,
+                 from /usr/include/c++/4.8/ios:42,
+                 from /usr/include/c++/4.8/ostream:38,
+                 from /usr/include/c++/4.8/iostream:39,
+                 from main.cpp:1:
+/usr/include/c++/4.8/ext/new_allocator.h: In instantiation of ‘void __gnu_cxx::new_allocator<_Tp>::construct(__gnu_cxx::new_allocator<_Tp>::pointer, const _Tp&) [with _Tp = int [3]; __gnu_cxx::new_allocator<_Tp>::pointer = int (*)[3]]’:
+/usr/include/c++/4.8/ext/alloc_traits.h:216:9:   required from ‘static void __gnu_cxx::__alloc_traits<_Alloc>::construct(_Alloc&, __gnu_cxx::__alloc_traits<_Alloc>::pointer, const _Tp&) [with _Tp = int [3]; _Alloc = std::allocator<int [3]>; __gnu_cxx::__alloc_traits<_Alloc>::pointer = int (*)[3]]’
+/usr/include/c++/4.8/bits/stl_vector.h:906:34:   required from ‘void std::vector<_Tp, _Alloc>::push_back(const value_type&) [with _Tp = int [3]; _Alloc = std::allocator<int [3]>; std::vector<_Tp, _Alloc>::value_type = int [3]]’
+main.cpp:60:35:   required from here
+/usr/include/c++/4.8/ext/new_allocator.h:130:9: error: parenthesized initializer in array new [-fpermissive]
+       { ::new((void *)__p) _Tp(__val); }
+         ^
