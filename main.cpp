@@ -11,6 +11,7 @@ int noCaches;
 int cacheSize;
 
 vector<int> videoSizes;
+
 // [datacenter latency][no cache servers][cache server no][cache server latency]
 vector< vector<int> > endpoints;
 // [videoID][endpointID][no Requests]
@@ -102,6 +103,70 @@ void testGetInput()
     }
 }
 
+int addToCache(int cacheNumber, int videoNum)
+{
+    int totCacheSize = 0;
+    cacheServers[cacheNumber].push_back(videoNum);
+
+    for(int i = 0; i < cacheServers[cacheNumber].size(); ++i) {
+        totCacheSize += cacheServers[cacheNumber][i];
+    }
+
+    if(totCacheSize > cacheSize) {
+        cacheServers[cacheNumber].pop_back();
+        return 0;
+    }
+    else {
+        return 1;
+    }
+}
+
+int isCacheFull(int cacheNumber, int videoNum)
+{
+    int totCacheSize = 0;
+
+    for(int i = 0; i < cacheServers[cacheNumber].size(); ++i) {
+        totCacheSize += videoSizes[ cacheServers[cacheNumber][i] ];
+    }
+
+    //cout << "totot " << totCacheSize << endl;
+    if(totCacheSize + videoSizes[videoNum] + 1>= cacheSize) {
+        return 1;
+    } else {
+        return 0;
+    }
+
+}
+
+int quickestCacheAvailable(int endpointNo)
+{
+
+}
+int quickestCache(int endpointNo, int videoNo)   // returns cacheNo or -1 if no cache
+{
+    int cacheNo = -1;
+    int lowestLat;
+    if(endpoints[endpointNo].size() >= 4) {
+        lowestLat = endpoints[endpointNo][3];
+        cacheNo = 0;
+    } else {
+        return -1;
+    }
+
+    for(int i = 3; i < endpoints[endpointNo].size(); i += 2) {
+        int tcn = endpoints[endpointNo][i-1];
+        if(endpoints[endpointNo][i] < lowestLat && !isCacheFull(tcn, videoNo ) ) {
+            lowestLat = endpoints[endpointNo][i];
+            cacheNo = endpoints[endpointNo][i-1];
+        }
+    }
+
+    if(isCacheFull(cacheNo, videoNo)) {
+        return -1;
+    }
+    return cacheNo;
+}
+
 void john()
 {
     for(int i = 0; i < videoRequests.size(); ++i) {
@@ -119,7 +184,15 @@ void john()
                     }
                     }
                 }
-            cout << "Endpoint: " << endpointMost << " requests " << mostRequested << " for video[" << i << "]" << endl;
+            //cout << "Endpoint: " << endpointMost << " requests " << mostRequested << " for video[" << i << "]" << endl;
+            int quickC;
+            quickC = quickestCache(endpointMost, i);
+            if(quickC > 0) {
+                addToCache(quickC, i);
+            } else {
+
+            }
+
         }
     }
 }
@@ -151,33 +224,57 @@ void fillVideoRequests()
     }
 }
 
-int addToCache(int cacheNumber, int videoNum)
+void cacheInitialise()
 {
-    int totCacheSize = 0;
-    cacheServers[cacheNumber].push_back(videoNum);
+    vector<int> t;
 
-    for(int i = 0; i < cacheServers[cacheNumber].size(); ++i) {
-        totCacheSize += cacheServers[cacheNumber][i];
+    for(int i = 0; i < noCaches; ++i) {
+        cacheServers.push_back(t);
     }
-
-    if(totCacheSize > cacheSize)
-        return 0;
-    else
-        return 1
 }
+
+
+
+
 int main()
 {
     getInput();
-    testGetInput();
-    cout << sumVideoSize() << endl;
-    fillVideoRequests();
+    cacheInitialise();
 
+    //testGetInput();
+    //cout << sumVideoSize() << endl;
+    fillVideoRequests();
+/*
     for(int i = 0; i < videoRequests.size(); ++i) {
         
         if(videoRequests[i] > 0)
              cout << "Video[" << i << "] requests: " << videoRequests[i] << " size per video " << videoSizes[i] << " total requests data " << videoSizes[i]*videoRequests[i] << endl;
     }
 
-    cout << sumRequestedVideoSize() << endl;
+    cout << sumRequestedVideoSize() << endl; */
     john();
+
+
+    //cacheServers[1].pop_back();
+
+    int noUsed = 0;
+    for(int i = 0; i < cacheServers.size(); ++i) {
+        if(cacheServers[i].size() > 0)
+            noUsed++;
+    }
+
+    cout << noUsed << endl;
+    for(int i = 0; i < cacheServers.size(); ++i) {
+        if(cacheServers[i].size() > 0) {
+            cout << i << " "; // cache no
+
+            for(int j = 0; j < cacheServers[i].size(); ++j) {
+                cout << cacheServers[i][j] << " ";
+            }
+        
+        cout << endl;
+        }
+    }
+
+    //cout << isCacheFull(1, 31) << endl;
 }
