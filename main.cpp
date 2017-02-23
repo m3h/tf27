@@ -16,6 +16,7 @@ vector< vector<int> > endpoints;
 // [videoID][endpointID][no Requests]
 vector< vector<int> > requests;
 
+vector<int> videoRequests;
 
 void getInput()
 {
@@ -115,9 +116,24 @@ int sumVideoSize()  // in MB
     return sum;
 }
 
+void fillVideoRequests()
+{
+    for(int i = 0; i < noVideos; ++i) {
+        videoRequests.push_back(0);
+    }
+
+    for(int i = 0; i < requests.size(); ++i) {
+        videoRequests[ requests[i][0] ] += requests[i][2];
+    }
+}
 int main()
 {
     getInput();
     testGetInput();
     cout << sumVideoSize() << endl;
+    fillVideoRequests();
+
+    for(int i = 0; i < videoRequests.size(); ++i) {
+        cout << "Video[" << i << "] requests: " << videoRequests[i] << endl;
+    }
 }
