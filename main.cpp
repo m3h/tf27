@@ -11,7 +11,9 @@ int noCaches;
 int cacheSize;
 
 vector<int> videoSizes;
+// [datacenter latency][no cache servers][cache server no][cache server latency]
 vector< vector<int> > endpoints;
+// [videoID][endpointID][no Requests]
 vector< vector<int> > requests;
 
 
@@ -66,9 +68,8 @@ void getInput()
 
 }
 
-int main()
+void testGetInput()
 {
-    getInput();
     cout << noVideos << endl;
     cout << noEndpoints << endl;
     cout << noRequestDescriptions << endl;
@@ -96,4 +97,27 @@ int main()
 
         cout << endl;
     }
+}
+
+void john()
+{
+    // all endpoints
+    for(int i = 0; i < endpoints.size(); ++i) {
+
+    }
+}
+
+int sumVideoSize()  // in MB
+{
+    int sum = 0;
+    for(int i = 0; i < videoSizes.size(); ++i)
+        sum += videoSizes[i];
+    return sum;
+}
+
+int main()
+{
+    getInput();
+    testGetInput();
+    cout << sumVideoSize() << endl;
 }
